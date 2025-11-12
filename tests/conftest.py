@@ -1,5 +1,4 @@
 import pytest
-
 from commitizen import defaults
 from commitizen.config import BaseConfig
 

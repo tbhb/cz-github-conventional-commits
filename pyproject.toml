@@ -3,9 +3,9 @@ requires = ["uv_build>=0.9.7,<0.10.0"]
 build-backend = "uv_build"
 
 [project]
-name = "cz-github-conventional-commits"
+name = "cz-github-conventional"
 version = "0.0.0"
-description = "A Commitizen template that extends the conventional commits template with GitHub-specific functionality."
+description = "A Commitizen template for GitHub repositories with conventional commits."
 readme = "README.md"
 authors = [{ name = "Tony Burns", email = "tony@tonyburns.net" }]
 keywords = ["commitizen", "conventional", "commits", "git", "github"]
@@ -41,20 +41,20 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/tbhb/cz-github-conventional-commits"
+Homepage = "https://github.com/tbhb/cz-github-conventional"
 Documentation = "https://commitizen-tools.github.io/commitizen/"
-Repository = "https://github.com/tbhb/cz-github-conventional-commits"
-Issues = "https://github.com/tbhb/cz-github-conventional-commits/issues"
-Changelog = "https://github.com/tbhb/cz-github-conventional-commits/blob/master/CHANGELOG.md"
+Repository = "https://github.com/tbhb/cz-github-conventional"
+Issues = "https://github.com/tbhb/cz-github-conventional/issues"
+Changelog = "https://github.com/tbhb/cz-github-conventional/blob/master/CHANGELOG.md"
 
 [project.entry-points."commitizen.plugin"]
-cz_github_conventional_commits = "cz_github_conventional_commits:GitHubConventionalCommitsCz"
+cz_github_conventional = "cz_github_conventional.github_conventional_cz:GitHubConventionalCz"
 
 [tool.codespell]
 skip = "uv.lock"
 
 [tool.commitizen]
-name = "cz_github_conventional_commits"
+name = "cz_github_conventional"
 version_provider = "pep621"
 tag_format = "v$version"
 major_version_zero = true
@@ -63,7 +63,7 @@ pre_bump_hooks = ["uv sync --all-packages --all-groups --all-extras"]
 
 [tool.coverage.run]
 branch = true
-source = ["src/cz_github_conventional_commits"]
+source = ["src/cz_github_conventional"]
 relative_files = true
 omit = ["tests/*", "**/__pycache__/*", "**/site-packages/*"]
 
@@ -97,8 +97,8 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_unused_configs = true
 
-[tool.pytest.ini_options]
-addopts = ["--import-mode=importlib", "--tb", "short"]
+[tool.pytest]
+addopts = ["--import-mode=importlib", "--tb=short"]
 pythonpath = ["src"]
 filterwarnings = ["error"]
 testpaths = ["tests"]
@@ -136,13 +136,13 @@ ignore = ["E501", "D1", "D415"]
 "tests/*" = ["ANN"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["commitizen", "tests"]
+known-first-party = ["cz_github_conventional", "tests"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.uv.build-backend]
 source-include = [
-  "src/cz_github_conventional_commits/py.typed",
-  "src/cz_github_conventional_commits/templates/*",
+  "src/cz_github_conventional/py.typed",
+  "src/cz_github_conventional/templates/*",
 ]

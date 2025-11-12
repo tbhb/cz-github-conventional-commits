@@ -273,7 +273,7 @@ wheels = [
 ]
 
 [[package]]
-name = "cz-github-conventional-commits"
+name = "cz-github-conventional"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [

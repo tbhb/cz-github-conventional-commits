@@ -1,3 +1,3 @@
-# cz-github-conventional-commits
+# cz-github-conventional
 
-A Commitizen template that extends the conventional commits template with GitHub-specific capabilities.
+A Commitizen template for GitHub repositories with conventional commits.

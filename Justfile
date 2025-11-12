@@ -19,7 +19,7 @@ test: install
 # Run tests with coverage report
 test-coverage: install
   uv run --frozen pytest \
-    --cov=cz_github_conventional_commits \
+    --cov=cz_github_conventional \
     --cov-report=term-missing:skip-covered \
     --cov-report=html \
     --cov-report=xml \

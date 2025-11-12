@@ -221,4 +221,4 @@ __marimo__/
 .vale/config/*
 !.vale/config/vocabularies/
 .vale/config/vocabularies/*
-!.vale/config/vocabularies/cz-github-conventional-commits/
+!.vale/config/vocabularies/cz-github-conventional/

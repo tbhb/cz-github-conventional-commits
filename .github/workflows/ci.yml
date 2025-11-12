@@ -66,7 +66,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/attest-build-provenance@v3
         with:
-          subject-path: "${{ github.workspace }}/dist/cz_github-conventional_commits-*"
+          subject-path: "${{ github.workspace }}/dist/cz_github_conventional-*"
 
   test:
     strategy:

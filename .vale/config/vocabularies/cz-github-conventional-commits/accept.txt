@@ -1,3 +1,0 @@
-commitizen
-Commitizen
-cz-github-conventional-commits
