@@ -1,0 +1,148 @@
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[project]
+name = "cz-github-conventional-commits"
+version = "0.0.0"
+description = "A Commitizen template that extends the conventional commits template with GitHub-specific functionality."
+readme = "README.md"
+authors = [{ name = "Tony Burns", email = "tony@tonyburns.net" }]
+keywords = ["commitizen", "conventional", "commits", "git", "github"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.10"
+dependencies = ["commitizen>=4.10.0"]
+
+[dependency-groups]
+dev = [
+  "codespell>=2.4.1",
+  "djlint>=1.36.4",
+  "mypy>=1.18.2",
+  "prek>=0.2.13",
+  "pytest>=9.0.1",
+  "pytest-cov>=7.0.0",
+  "pytest-mock>=3.15.1",
+  "ruff>=0.14.4",
+  "yamllint>=1.37.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/tbhb/cz-github-conventional-commits"
+Documentation = "https://commitizen-tools.github.io/commitizen/"
+Repository = "https://github.com/tbhb/cz-github-conventional-commits"
+Issues = "https://github.com/tbhb/cz-github-conventional-commits/issues"
+Changelog = "https://github.com/tbhb/cz-github-conventional-commits/blob/master/CHANGELOG.md"
+
+[project.entry-points."commitizen.plugin"]
+cz_github_conventional_commits = "cz_github_conventional_commits:GitHubConventionalCommitsCz"
+
+[tool.codespell]
+skip = "uv.lock"
+
+[tool.commitizen]
+name = "cz_github_conventional_commits"
+version_provider = "pep621"
+tag_format = "v$version"
+major_version_zero = true
+update_changelog_on_bump = true
+pre_bump_hooks = ["uv sync --all-packages --all-groups --all-extras"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/cz_github_conventional_commits"]
+relative_files = true
+omit = ["tests/*", "**/__pycache__/*", "**/site-packages/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "@abstractmethod",
+  "@abc.abstractmethod",
+]
+precision = 2
+show_missing = true
+skip_covered = false
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.mypy]
+files = ["src", "tests"]
+disallow_untyped_decorators = true
+disallow_subclassing_any = true
+warn_return_any = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib", "--tb", "short"]
+pythonpath = ["src"]
+filterwarnings = ["error"]
+testpaths = ["tests"]
+xfail_strict = true
+
+[tool.ruff]
+required-version = ">=0.11.5"
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  # flake8-annotations
+  "ANN001",
+  "ANN2",
+  # pycodestyle
+  "E",
+  # Pyflakes
+  "F",
+  # pyupgrade
+  "UP",
+  # isort
+  "I",
+  # pygrep-hooks
+  "PGH003",
+  "PGH004",
+  # unsorted-dunder-all
+  "RUF022",
+  # unused-noqa
+  "RUF100",
+]
+ignore = ["E501", "D1", "D415"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ANN"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["commitizen", "tests"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.uv.build-backend]
+source-include = [
+  "src/cz_github_conventional_commits/py.typed",
+  "src/cz_github_conventional_commits/templates/*",
+]

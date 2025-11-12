@@ -1,0 +1,98 @@
+---
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # v7.1.3
+        with:
+          python-version: "3.10"
+          enable-cache: true
+
+      - name: Install just
+        uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff # v3
+
+      - name: Run linters
+        run: just lint
+
+  build:
+    name: "Build"
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # v7.1.3
+        with:
+          python-version: "3.10"
+          enable-cache: true
+
+      - name: Install just
+        uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff # v3
+
+      - name: Build package
+        run: just build
+
+      - name: Attest
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: "${{ github.workspace }}/dist/cz-github-conventional-commits-*"
+
+  test:
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+      fail-fast: false
+
+    name: "Test (Python ${{ matrix.python-version }})"
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # v7.1.3
+        with:
+          python-version: "${{ matrix.python-version }}"
+          enable-cache: true
+
+      - name: Install just
+        uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff # v3
+
+      - name: Run tests
+        shell: bash
+        run: |
+          just test-coverage
